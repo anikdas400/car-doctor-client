@@ -1,13 +1,29 @@
 import { Link } from "react-router-dom";
 import logo from '../../src/assets/logo.svg'
+import { useContext } from "react";
+import { AuthContext } from "../Providers/AuthProvider";
 
 
 const Navber = () => {
+
+    const {user,logOut} = useContext(AuthContext)
+
+    const handleLogOut =()=>{
+        logOut()
+        .then(()=>{})
+        .catch(error=>console.error(error))
+    }
     const navManu = <>
     <Link className="text-lg mr-2 hover:text-violet-800 font-medium" to='/'><li>Home</li></Link>
     <Link className="text-lg mr-2 hover:text-violet-800 font-medium" to='/about'><li>About</li></Link>
     <Link className="text-lg mr-2 hover:text-violet-800 font-medium" to='/service'><li>Service</li></Link>
-    <Link className="text-lg hover:text-violet-800 font-medium" to='/login'><li>Login</li></Link>
+    {
+        user?.email? <>
+        <Link className="text-lg mr-2 hover:text-teal-600 font-medium" to='/bookings'><li>My Bookings</li></Link>
+        <li><button onClick={handleLogOut}>LogOut</button></li>
+        </>:<Link className="text-lg hover:text-violet-800 font-medium" to='/login'><li>Login</li></Link>
+    }
+    
     
     </>
     return (
